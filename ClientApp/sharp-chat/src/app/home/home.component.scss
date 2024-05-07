@@ -1,0 +1,33 @@
+.conversation {
+    width: 400px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.chat-message {
+    flex: 1;
+    order: 1px solid lightgrey;
+    border: 1px solid lightgrey;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.chatbox {
+    display: flex;
+}
+
+.chatbox-input {
+    flex: 1;
+}
+
+.chatbox-send-btn {
+    border-radius: 0;
+}
+

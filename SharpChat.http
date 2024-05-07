@@ -1,0 +1,6 @@
+@SharpChat_HostAddress = http://localhost:5227
+
+GET {{SharpChat_HostAddress}}/
+Accept: application/json
+
+###
