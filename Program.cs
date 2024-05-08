@@ -1,9 +1,16 @@
 using System.Net.WebSockets;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using SharpChat.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+{
+    string connectionString = builder.Configuration["ConnectionStrings:SharpChatConn"]
+        ?? throw new InvalidOperationException("Connection string environment variable not set.");
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
+}
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseWebSockets();
 
