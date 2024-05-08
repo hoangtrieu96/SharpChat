@@ -12,7 +12,7 @@ app.MapGet("/ws", async (HttpContext context) =>
 {
     if (context.WebSockets.IsWebSocketRequest)
     {
-        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
         SOCKETS.Add(webSocket);
         await HandleWebSocketRequest(webSocket);
     }
@@ -32,19 +32,18 @@ async Task HandleWebSocketRequest(WebSocket socket)
     {
         while (socket.State == WebSocketState.Open)
         {
-            var buffer = new byte[1024 * 4];
+            byte[] buffer = new byte[1024 * 4];
             var receivedBuffer = new ArraySegment<byte>(buffer);
-            var message = await socket.ReceiveAsync(receivedBuffer, default);
+            WebSocketReceiveResult message = await socket.ReceiveAsync(receivedBuffer, default);
 
             if (message.MessageType == WebSocketMessageType.Close)
             {
-                var closeStatus = message.CloseStatus.HasValue ? message.CloseStatus.Value
-                                                                : WebSocketCloseStatus.Empty;
+                WebSocketCloseStatus closeStatus = message.CloseStatus ?? WebSocketCloseStatus.Empty;
                 await socket.CloseAsync(closeStatus, message.CloseStatusDescription, default);
                 break;
             }
 
-            foreach (var s in SOCKETS)
+            foreach (WebSocket s in SOCKETS)
             {
                 string textMessage = Encoding.UTF8.GetString(receivedBuffer);
                 textMessage = $"Received at {DateTime.Now} --> {textMessage}";
